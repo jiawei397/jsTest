@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>jQuery测试</title>
+		<!--<script type="application/javascript" src="js/jquery-1.11.2.min.js"></script>-->
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		<style type="text/css">
+			#animation{
+				width: 200px;
+				height: 200px;
+				background: #0000FF;
+			}
+			.titleText{
+				color:goldenrod;
+				font-family: "bodoni mt";
+			}
+		</style>
+		<script type="application/javascript">
+			$(function(){
+				jQuery.extend( {
+					jsonTo : function(data) {
+						//return uinv.jsonParse(data);
+						return eval("(" + data + ")");
+					},
+					/**
+					 * *
+					 * 
+					 * @see 将javascript数据类型转换为json字符串 *
+					 * @param 待转换对象,支持object,array,string,function,number,boolean,regexp *
+					 * @return 返回json字符串
+					 */
+					toJson : function(object) {
+						var type = typeof object;
+						try {
+							if ('object' == type) {
+								if (Array == object.constructor)
+									type = 'array';
+								else if (RegExp == object.constructor)
+									type = 'regexp';
+								else
+									type = 'object';
+							}
+						} catch (e) {
+						}
+						switch (type) {
+						case 'undefined':
+						case 'unknown':
+							return;
+							break;
+						case 'function':
+						case 'boolean':
+						case 'regexp':
+							return object.toString();
+							break;
+						case 'number':
+							return isFinite(object) ? object.toString() : 'null';
+							break;
+						case 'string':
+							return '"' + object.replace(/(\\|\")/g, "\\$1").replace(
+									/\n|\r|\t/g,
+									function() {
+										var a = arguments[0];
+										return (a == '\n') ? '\\n' : (a == '\r') ? '\\r'
+												: (a == '\t') ? '\\t' : ""
+									}) + '"';
+							break;
+						case 'object':
+							if (object === null)
+								return 'null';
+							var results = [];
+							for ( var property in object) {
+								var value = jQuery.toJson(object[property]);
+								if (value !== undefined)
+									results.push(jQuery.toJson(property) + ':' + value);
+							}
+							return '{' + results.join(',') + '}';
+							break;
+						case 'array':
+							var results = [];
+							for ( var i = 0; i < object.length; i++) {
+								var value = jQuery.toJson(object[i]);
+								if (value !== undefined)
+									results.push(value);
+							}
+							return '[' + results.join(',') + ']';
+							break;
+						}
+					}
+				});
+				
+				
+				
+				$("#animation").show('slow');
+				$("#animation").queue(function(){
+					$(this).animate({width:'+=400'},1000);
+					$(this).animate({height:'+=100'},1000);
+					var p = $("p");
+					p.text('fjfjfjj');
+					$(this).dequeue();
+				});
+				console.debug($.now());
+				var a = $(':animated');
+				console.log(a)
+				
+				var it = $("input");
+				console.log(it);
+				var it2 = $(":input");
+				console.log(it2);
+				console.log(it == it2)
+				
+				var parentDemo = $('div:parent').attr('id');
+				console.log(parentDemo)
+				
+				$.expr[':'].greenbg = function(element){
+					return $(element).css('background-color') === 'red';
+				};
+				
+				var n = $(":greenbg");
+				console.log(n.length);
+				
+				var list = $("li");
+				list.filter(":gt(3)").css('color','red')
+					.end()
+					.filter(":lt(2)").css('color','blueviolet')
+					.end();
+				console.log(list.length);
+				
+				$('div#test').html("<p style='background-color:aquamarine ;'>red</p>");
+				
+				$('<h1>has a nice day</h1>').appendTo('body').attr('class','titleText');
+				
+				$('#test2').one('click',function(){
+					alert('test')
+				});
+				$('#test2').bind('click',function(){
+					alert('test2')
+				});
+				
+				$('#test3',this).mouseover(function(){
+					$(this).find('p').fadeIn().fadeOut();
+				});
+				$("input").click(function(){
+					$("#test3").trigger("mouseover");
+				});
+				
+				
+				(function($){
+					$.fn.bestPluginEver = function(options){
+						var settings = $.extend({},$.fn.bestPluginEver.defaults,options);
+						console.log(settings);
+						return this.each(function(){
+							
+						});
+					}
+					$.fn.bestPluginEver.defaults = {
+								'color':'blue',
+								'name':'jw',
+								'width':'970px'
+						};
+				})(jQuery);
+				$.fn.bestPluginEver.width = '120px';
+				$('#animation').bestPluginEver({
+					'color':'red',
+					'height':32
+				});
+				
+				//在动态执行环境中，数据实时地发生变化，为了保持这些非持久型变量的值，我们用闭包这种载体来存储这些动态数据。这就是闭包的作用。也就说遇到需要存储动态变化的数据或将被回收的数据时，我们可以通过外面再包裹一层函数形成闭包来解决。
+				/**
+				 * 闭包应用
+				 */
+				for (var i = 0; i < 4; i++) {
+					var id = document.getElementById("a" + i);
+//					id.onclick = function(){alert(i)};//每次都会弹出4
+					id.onclick = function(i){
+						return function(){
+							alert(i);
+						}
+					}(i);
+				}
+				
+				/**
+				 * 闭包应用2
+				 * 自增id
+				 */
+				var GetId = (function() {
+			        var id = 0;
+			        return function() {
+			            return id++;
+			        }
+			    })();
+			    var newId1 = GetId();
+			    var newId2 = GetId();
+				
+				/**
+				 * 闭包3
+				 * 用闭包实现程序的暂停执行功能
+				 */
+				 var st = (function() {
+		            alert(1);
+		            alert(2);
+		            return function() {
+		                alert(3);
+		                alert(4);
+		            }
+		        })();
+		        $("#jx").bind('click',st);
+		        
+		        var obj = {
+		        	'a':1,
+		        	'b':null
+		        }
+		        var json= $.toJson(obj);
+				console.log("json="+json);
+			});
+		</script>
+	</head>
+	<body>
+		<div id="animation" style="display: none">
+			
+		</div>
+		<p>我是测试</p>
+		<div>
+			<ul>
+				<li id="a0">Children!</li>
+				<li id="a1">egs</li>
+				<li id="a2">hahaha</li>
+				<li id="a3">sss</li>
+				<li id="a4">4442</li>
+				<li id="a5">6</li>
+			</ul>
+		</div>
+		<div id="test" style="background-color: green;width: 10px;height: 20px;">
+			test1
+		</div>
+		<div id="test2" style="background-color: red;width: 15px;height: 15px;">
+			test2
+		</div>
+		<div id="test3" style="background-color: #DAA520">
+			<p>haha</p>
+		</div>
+		<input type="button" value="按钮" />
+		<input type="button" value="bt" />
+		<form>
+			<input type="text" name="username"  required placeholder="请填写用户名" />
+			<input type="password" name="password" required/>
+			<input type="submit" value="验证"/>
+		</form>
+		<input id="jx" type="button" value="继续"/>
+	</body>
+</html>

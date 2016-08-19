@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="day2-meal-expense" data-drink="coffee" data-food="速食" data-meal="lunch">¥20.12</div>
+		<button id="button">点击我</button>
+		<script type="text/javascript">
+			function setDataAttr(dom,attrName,attrValue){
+				if(dom.dataset){
+					dom.dataset[attrName] = attrValue;
+				}else{
+					dom.setAttribute('data-' + attrName,attrValue);
+				}
+			}
+			
+			function getAttr(dom,attrName){
+				if(dom.dataset){
+					return dom.dataset[attrName];
+				}else{
+					return dom.getAttribute('data-' + attrName);
+				}
+			}
+		
+//			var expenseday2 = document.getElementById("day2-meal-expense");  
+//			
+//			document.getElementById("button").onclick = function() {
+//			    alert("饮料是：" + getAttr(expenseday2,'drink'));
+//			};
+			
+			$(function(){
+				$("#button").bind('click',function(){
+					alert("饮料是：" + $("#day2-meal-expense").data('drink'));
+					alert("food="+$("#day2-meal-expense").data('food'));
+				});
+			});
+			
+		</script>
+	</body>
+</html>

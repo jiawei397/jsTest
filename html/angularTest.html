@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			input.ng-invalid {
+			    background-color: lightblue;
+			}
+		</style>
+		<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+		<script type="text/javascript">
+			var app = angular.module('myApp',[]);
+			app.controller('myCtrl',function($scope, $rootScope){
+				$scope.firstName = 'jw';
+				$rootScope.lastName = 'Conan';
+				$scope.personArr=[
+					{name:'Jani',country:'Norway'},
+					{name:'Hege',country:'Sweden'},
+					{name:'Kai',country:'Denmark'}];
+				$scope.myText = 'jw@3e9.com';	
+			});
+			app.directive("runoobDirective", function() {
+			    return {
+//			    	restrict:'E',
+			        template : "<h1>自定义指令1!</h1>"
+			    };
+			});
+			app.directive("runoobDirective2", function() {
+			    return {
+			    	restrict:'C',
+			        template : "<h1>自定义指令2!</h1>"
+			    };
+			});
+			app.directive("runoobDirective3", function() {
+			    return {
+			    	restrict:"M",
+			    	replace:true,
+			        template : "<h1>自定义指令3!</h1>"
+			    };
+			});
+			app.directive("runoobDirective4", function() {
+			    return {
+			    	restrict:'A',
+			        template : "<h1>自定义指令4!</h1>"
+			    };
+			});
+		</script>
+	</head>
+	<body ng-app="myApp" ng-controller="myCtrl" ng-init="quantity=1;cost=5;person={firstName:'John',lastName:'Doe'};">
+		<div>
+			<runoob-directive></runoob-directive>
+			
+			<div class="runoob-directive2"></div>
+			<p><strong>注意：</strong> 你必须设置 <b>restrict</b> 的值为 "C" 才能通过类名来调用指令。</p>
+			<!--  directive:runoob-directive3 -->
+			<p><strong>注意：</strong> 我们需要在该实例添加 <strong>replace</strong> 属性， 否则评论是不可见的。</p>
+			<p><strong>注意：</strong> 你必须设置 <b>restrict</b> 的值为 "M" 才能通过注释来调用指令。</p>
+			
+			<div runoob-directive4></div>
+			<p><strong>注意：</strong> 通过设置 <strong>restrict</strong> 属性值为 "A" 来设置指令只能通过 HTML 元素的属性来调用。</p>
+			
+			<h2>绑定例子</h2>
+			名: <input type="text" ng-model="firstName" required><br>
+			姓: <input type="text" ng-model="lastName" required><br>
+			<br>
+			姓名: {{firstName + " " + lastName}}
+			<p>姓名： <span ng-bind="firstName + ' ' + lastName"></span></p>
+			<p>姓为 <span ng-bind="person.lastName"></span></p>
+			
+			<h2>价格计算器</h2>
+
+			数量： <input type="number"	ng-model="quantity">
+			价格： <input type="number" ng-model="price">
+			
+			<p><b>总价：</b> {{ quantity * price }}</p>
+			
+			<div ng-app="arr" ng-init="names=['Jani','Hege','Kai']">
+			  <p>使用 ng-repeat 来循环数组</p>
+			  <p>注意 $rootScope 在循环对象内外都可以访问。</p>
+			  <ul>
+			    <li ng-repeat="x in names">
+			      {{ x }}
+			      {{lastName}}
+			    </li>
+			  </ul>
+			</div>
+			
+			<p>循环对象：</p>
+			<ul>
+			  <li ng-repeat="x	in personArr">
+			    {{ x.name + ', ' + x.country }}
+			  </li>
+			</ul>
+		</div>
+		
+		<form  name="myForm">
+		    Email:
+		    <input type="email" name="myAddress" ng-model="myText" required>
+		    <span ng-show="myForm.myAddress.$error.email">不是一个合法的邮箱地址</span>
+			<p>在输入框中输入你的邮箱地址，如果不是一个合法的邮箱地址，会弹出提示信息。</p>
+			 <h1>状态</h1>
+		    {{myForm.myAddress.$valid}}
+		    {{myForm.myAddress.$dirty}}
+		    {{myForm.myAddress.$touched}}
+		</form>
+	</body>
+</html>

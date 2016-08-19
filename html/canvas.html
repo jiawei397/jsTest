@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>jQuery UI 自动完成（Autocomplete） - 默认功能</title>
+  		<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+		 <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+		<style type="text/css">
+			canvas{
+				width: 100px;
+				height: 100px;
+				top: 0;
+				left: 0;
+				position: absolute;
+			}
+			button{
+				width: auto;
+			}
+		</style>
+		<script type="text/javascript">
+			$(function(){
+//				var rect_ctx = $("canvas#rect")[0].getContext('2d');
+//				rect_ctx.fillStyle = 'rgb(0,150,0)';
+//				rect_ctx.strokeStyle = 'rgb(200,0,0)';
+//				rect_ctx.fillRect(0,0,150,150);
+//				
+//				rect_ctx.fillStyle = 'rgb(100,100,0)';
+//				rect_ctx.fillRect(150,150,150,150);
+//				
+//				$(document).click(function(){
+//					$('#rect').animate({
+//						left:'+800px'
+//					},200);
+//				});
+				
+				
+				 var availableTags = [
+				      "ActionScript",
+				      "AppleScript",
+				      "Asp",
+				      "BASIC",
+				      "C",
+				      "C++",
+				      "Clojure",
+				      "COBOL",
+				      "ColdFusion",
+				      "Erlang",
+				      "Fortran",
+				      "Groovy",
+				      "Haskell",
+				      "Java",
+				      "JavaScript",
+				      "Lisp",
+				      "Perl",
+				      "PHP",
+				      "Python",
+				      "Ruby",
+				      "Scala",
+				      "Scheme"
+				    ];
+				    $( "#tags" ).autocomplete({
+				      source: availableTags
+				    });
+				
+				var img = document.body.querySelector("img.button");
+				console.log("img:"+img.id);
+			});
+		</script>
+	</head>
+	<body>
+		<!--<canvas id="rect"></canvas>-->
+		<div id="div" class="ui-widget">
+			<label for='tags'>Tags:</label>
+			<input id="tags">
+		</div>
+		<img  id="imgTest" class="button"/>
+	</body>
+</html>

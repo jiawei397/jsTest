@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>qUnit测试</title>
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="css/qunit-git.css" />
+		<script src="js/qunit-git.js"></script>
+		<!--<link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css" />
+		<script src="http://code.jquery.com/qunit/qunit-git.js"></script>-->
+		<script type="text/javascript">
+			$(function() {
+				QUnit.module('Module 1');
+				QUnit.test('hello world', function(assert) {
+					//					assert.expect(2);
+					var message = 'Hello World';
+					assert.equal(message, 'Hello World', 'We expected the message to match');
+				});
+				QUnit.test('使用OK测试真伪', function(assert) {
+					var val = function() {
+						var arr = [1, 2, 3, 4, 5];
+						return arr;
+					};
+					assert.ok($.isArray(val()), '希望是个数组！');
+				});
+
+				QUnit.test('dom', function(assert) {
+					assert.expect(3);
+					$test = $("#dom-test");
+					$test.css('width', '200px').text('测试这个dom').show();
+					assert.equal($test.css('width'), '200px', '200px!');
+					assert.equal($test.text(), '测试这个dom', '我们正在测试这个dom!');
+					assert.equal($test.css('display'), 'block', 'display: none;');
+				});
+
+				QUnit.test("deepEqual test", function(assert) {
+					var obj = {
+						foo: "bar"
+					};
+
+					assert.deepEqual(obj, {
+						foo: "bar"
+					}, "Two objects can be the same in value");
+				});
+
+				QUnit.test("a test", function(assert) {
+					assert.expect(1);
+
+					var $body = $("body");
+
+					$body.on("click", function() {
+						assert.ok(true, "body was clicked!");
+					});
+
+					$body.trigger("click");
+				});
+
+				QUnit.test("b test", function(assert) {
+					var done = assert.async();
+					var $body = $("body");
+
+					$body.on("click", function() {
+						assert.ok(true, "body was clicked!");
+						done();
+						$body.unbind('click');
+					});
+
+					setTimeout(function() {
+						console.log("To click body")
+						$body.trigger("click");
+					}, 1000)
+
+				});
+
+				QUnit.test("a test 1", function(assert) {
+					var done = assert.async();
+					var $body = $("body");
+
+					$body.on("click", function() {
+						assert.ok(true, "body was clicked!");
+						done();
+						$body.unbind('click');
+					});
+
+					setTimeout(function() {
+						console.log("To click body")
+						$body.trigger("click");
+					}, 1000)
+
+				});
+
+//				QUnit.asyncTest("a test 2", function(assert) {
+//					var $body = $("body");
+//
+//					$body.on("click", function() {
+//						assert.ok(true, "body was clicked!");
+//						QUnit.start();
+//						$body.unbind('click');
+//					});
+//
+//					setTimeout(function() {
+//						console.log("To click body")
+//						$body.trigger("click");
+//					}, 1000)
+//
+//				});
+
+
+				QUnit.module('Module 2');
+				QUnit.test("Appends a span", function(assert) {
+					var fixture = $("#qunit-fixture");
+
+					fixture.append("<span>hello!</span>");
+					assert.equal($("span", fixture).length, 1, "div added successfully!");
+				});
+
+				QUnit.test("Appends a span again", function(assert) {
+					var fixture = $("#qunit-fixture");
+
+					fixture.append("<span>hello!</span>");
+					assert.equal($("span", fixture).length, 1, "span added successfully!");
+				});
+				
+				QUnit.module('fun with arrays', {
+					'beforeEach': function() {
+						this.arr = [1, 2, 3];
+						this.control = this.arr.length - 1;
+					},
+					'afterEach': function(assert) {
+						assert.equal(this.arr.length, this.control.length, 'We expected the message to match');
+					}
+				});
+
+
+//				QUnit.module( "router", {
+//				    beforeEach: function( assert ) {
+//				        this.router = new Router();
+//				    },
+//				    afterEach: function( assert ) {
+//				        this.router.destroy();
+//				        alert(2)
+//				    }
+//				});
+
+
+
+
+				QUnit.log(function(results) {
+					//				    console.log('对象为：',results );
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<h1 id="qunit-header">QUnit example</h1>
+		<h2 id="qunit-banner"></h2>
+		<div id="qunit-testrunner-toolbar">
+			<h2 id="qunit-userAgent"></h2>
+			<ol id="qunit-tests"></ol>
+		</div>
+		<div id="qunit-fixture">
+			<div id="dom-test" style="display: none;"></div>
+		</div>
+	</body>
+
+</html>

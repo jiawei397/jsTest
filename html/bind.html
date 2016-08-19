@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<div id="testId" style="background-color:red;width:200px;height:200px"></div>
+		<script>
+			window.addEventListener('click', function(event) {
+				if(event.target.getAttribute('id') === 'testId') {
+					// 这时候this是window，而不是document.getElementById("testId")
+
+					console.log("if");
+					console.log(this === window); // 输出 false
+					console.log(this === document.getElementById("testId")); // 输出 true        
+				} else {
+
+					console.log("else");
+					console.log(this === window); // 输出 false
+					console.log(this === document.getElementById("testId")); // 输出 true    
+
+				}
+
+			}.bind(document.getElementById("testId")));
+		</script>
+	</body>
+
+</html>
