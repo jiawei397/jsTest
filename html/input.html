@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Files property test</title>
+		<style type="text/css">
+			.div1 {
+				width: 100px;
+				height: 100px;
+				border: 1px solid #000000;
+				vertical-align: middle;
+				display: table-cell;
+			}
+			
+			.div2 {
+				width: 40px;
+				margin: 0 auto;
+				background-color: green;
+			}
+			/*.div2{ width:40px ; height: 40px; background-color: green; margin-top: 30px; margin-left: 30px;}*/
+			
+			.container {
+				display: table;
+				width: 100%;
+			}
+			
+			.row {
+				display: table-row;
+			}
+			
+			.column {
+				/*width: 100%;*/
+				display: table-cell;
+			}
+			
+			.sinp_160 {
+				width: 122px;
+				height: 18px;
+				line-height: 18px;
+				padding: 0 4px;
+				border: #d3d3d3 1px solid;
+				color: #666;
+				background: #fff;
+				font-family: "微软雅黑";
+			}
+			#fileupload{
+				position: relative;
+			}
+			
+			/*a{display:inline-block; width:100px; height:40px; background:red; position:relative; overflow:hidden;}
+a:hover{background:green;}
+input{position:absolute; right:0; top:0; font-size:100px; opacity:0; filter:alpha(opacity=0);}*/
+
+	 /*input {
+        position:absolute; 
+        right:0; 
+        top:0; 
+        text-align:right; 
+        font-size:600px; 
+        opacity:0; 
+        -moz-opacity:0; 
+        filter:alpha(opacity=0);
+	}*/
+	
+	
+	body{ font-size:14px;}
+input{ vertical-align:middle; margin:0; padding:0}
+.file-box{ position:relative;width:340px}
+.txt{ height:22px; border:1px solid #cdcdcd; width:180px;}
+.btn{ background-color:#FFF; border:1px solid #CDCDCD;height:24px; width:70px;}
+.file{ position:absolute; top:0; right:80px; height:24px; filter:alpha(opacity:0);opacity: 0;width:260px }
+		</style>
+		<script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+//				1.accept="application/msexcel"
+//				2.accept="application/msword"
+//				3.accept="application/pdf"
+//				4.accept="application/poscript"
+//				5.accept="application/rtf"
+//				6.accept="application/x-zip-compressed"
+//				7.accept="audio/basic"
+//				8.accept="audio/x-aiff"
+//				9.accept="audio/x-mpeg"
+//				10.accept="audio/x-pn/realaudio"
+//				11.accept="audio/x-waw"
+//				12.accept="image/gif"
+//				13.accept="image/jpeg"
+//				14.accept="image/tiff"
+//				15.accept="image/x-ms-bmp"
+//				16.accept="image/x-photo-cd"
+//				17.accept="image/x-png"
+//				18.accept="image/x-portablebitmap"
+//				19.accept="image/x-portable-greymap"
+//				20.accept="image/x-portable-pixmap"
+//				21.accept="image/x-rgb"
+//				22.accept="text/html"
+//				23.accept="text/plain"
+//				24.accept="video/quicktime"
+//				25.accept="video/x-mpeg2"
+//				26.accept="video/x-msvideo"
+//				var files ='<input type="text" class="sinp_160" id = "viewfile"/>' 
+//					+ '<a href="#"><input type="file" value="浏览"   accept="application/x-zip-compressed,image/gif, image/x-ms-bmp, image/bmp"  multiple id="myfiles" onchange="javascript:getFiles();"  /></a>'
+//				$("#fileupload").html(files);
+			});
+			
+			function getFiles() {
+				// Get input element  
+				var myFileList = document.getElementById("fileField");
+				// loop through files property, using length to get number of files chosen  
+				for(var i = 0; i < myFileList.files.length; i++) {
+					// display them in the div  
+					document.getElementById("display").innerHTML += "<br/>" + myFileList.files[i].name;
+//					$("#viewfile").val(myFileList.files[i].name);
+				}
+//				myFileList.select();
+//				myFileList.focus();
+//				$("#viewfile").val(window.getSelection().toString());
+//				var range = document.selection.createRange();
+//				$("#viewfile").val(range.text);
+			}
+		</script>
+	</head>
+
+	<body>
+		<!--<label>Use <strong>shift</strong> or <strong>ctrl</strong> click to pick a few files:   
+		</label>
+		<div id="fileupload">
+			<!--<input type="text" id="viewfile"  class="sinp_160"/>-->
+			<!--<a href="#">
+				<input width="200" height="100" type="file" value="浏览"  accept="application/x-zip-compressed,image/gif, image/x-ms-bmp, image/bmp"  multiple id="myfiles" onchange="javascript:getFiles();"  />
+			</a>-->
+		<!--</div>-->
+		<!--<div id="display"></div>-->
+		
+		
+		<div class="file-box">
+		  <form action="" method="post" enctype="multipart/form-data">
+		 <input type='text' name='textfield' id='textfield' class='txt' />  
+		 <input type='button' class='btn' value='浏览...' />
+		    <input type="file" name="fileField" class="file" id="fileField" size="28" onchange="javascript:getFiles();" />
+		 <input type="submit" name="submit" class="btn" value="上传" />
+		  </form>
+		</div>
+		
+		<div id="display"></div>
+		
+		<!--水平垂直居中-->
+		<div id="div1" class="div1">
+			<div id="div2" class="div2">
+				这是一段文字
+			</div>
+		</div>
+		
+
+		<!--<div class="container">
+		    <div class="column">Column 1</div>
+		    <div class="column">Column 2</div>
+		    <div class="column">Column 3</div>
+		</div>-->
+		<!--<div class="container">
+		    <div class="row">
+		        <div class="column">Column 1</div>
+		        <div class="column">Column 2</div>
+		        <div class="column">Column 3</div>
+		    </div>
+		    <div class="row">
+		        <div class="column">Column 1</div>
+		        <div class="column">Column 2</div>
+		        <div class="column">Column 3</div>
+		    </div>
+		</div>-->
+		<div class="container">
+			<div class="column">Column 1.</div>
+			<div class="column">Column 2 is a bit longer.</div>
+			<div class="column">Column 3 is longer with lots of text in it.</div>
+		</div>
+	</body>
+
+</html>

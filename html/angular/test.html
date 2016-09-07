@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+			input.ng-invalid {
+				background-color: lightblue;
+			}
+			
+			table,
+			th,
+			td {
+				border: 1px solid grey;
+				border-collapse: collapse;
+				padding: 5px;
+			}
+			/*奇数*/
+			/*table tr:nth-child(odd)	{
+			  background-color: #f1f1f1;
+			}*/
+			/*偶数*/
+			/*table tr:nth-child(even) {
+			  background-color: #ffffff;
+			}*/
+		</style>
+		<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+		<script type="text/javascript">
+			var app = angular.module('myApp', []);
+			//自定义
+			app.service('hexafy', function() {
+				this.myFunc = function(x) {
+					return x.toString(16);
+				}
+			});
+
+			app.controller('myCtrl', function($scope, $rootScope, $location, $http, $timeout, $interval, hexafy) {
+				$scope.firstName = 'jw';
+				$rootScope.lastName = 'Conan';
+				$scope.fullName = function() {
+					return $scope.firstName + " " + $scope.lastName;
+				};
+				$scope.personArr = [{
+					name: 'Jani',
+					country: 'Norway'
+				}, {
+					name: 'Hege',
+					country: 'Sweden'
+				}, {
+					name: 'Kai',
+					country: 'Denmark'
+				}];
+				$scope.myText = 'jw@3e9.com';
+				$scope.myUrl = $location.absUrl();
+
+				$http.get('../data/welcome.htm').then(function(response) {
+					$scope.myWelcome = response.data;
+				});
+
+				$scope.myHeader = "Hello World!";
+				$timeout(function() {
+					$scope.myHeader = "How are you today?";
+				}, 2000);
+
+				$scope.theTime = new Date().toLocaleTimeString();
+				$interval(function() {
+					$scope.theTime = new Date().toLocaleTimeString();
+				}, 1000);
+
+				$scope.hex = hexafy.myFunc(255);
+				$scope.counts = [255, 251, 200];
+
+				$scope.names = ['jwer', 'fmmfi', 'jrimmmxs'];
+
+				$scope.sites = [{
+					site: "Google",
+					url: "http://www.google.com"
+				}, {
+					site: "Runoob",
+					url: "http://www.runoob.com"
+				}, {
+					site: "Taobao",
+					url: "http://www.taobao.com"
+				}];
+
+				$scope.sitesObj = {
+					site01: "Google",
+					site02: "Runoob",
+					site03: "Taobao"
+				};
+
+				$scope.cars = {
+					car01: {
+						brand: "Ford",
+						model: "Mustang",
+						color: "red"
+					},
+					car02: {
+						brand: "Fiat",
+						model: "500",
+						color: "white"
+					},
+					car03: {
+						brand: "Volvo",
+						model: "XC90",
+						color: "black"
+					}
+				};
+
+				$http.get("../data/custom.json")
+					.success(function(response) {
+						$scope.customNames = response.records;
+					});
+
+				$scope.mySwitch = true;
+
+				$scope.myVar = false;
+				$scope.toggle = function() {
+					$scope.myVar = !$scope.myVar;
+				};
+
+				//AngularJS 表单实例
+				$scope.master = {
+					firstName: "John",
+					lastName: "Doe"
+				};
+				$scope.reset = function() {
+					$scope.user = angular.copy($scope.master);
+				};
+				$scope.reset();
+				
+				//表单验证
+				$scope.userName = "jwi HHHH";
+				$scope.email = "jw397@fkfk.com";
+				
+				$scope.x1 = "JOHN";
+				$scope.x2 = angular.lowercase($scope.x1);
+				$scope.x3 = angular.uppercase($scope.x1);
+				$scope.x4 = angular.isString($scope.x1);
+				$scope.x5 = angular.isNumber($scope.x1);
+			});
+
+			app.directive("runoobDirective", function() {
+				return {
+					//			    	restrict:'E',
+					template: "<h1>自定义指令1!</h1>"
+				};
+			});
+			app.directive("runoobDirective2", function() {
+				return {
+					restrict: 'C',
+					template: "<h1>自定义指令2!</h1>"
+				};
+			});
+			app.directive("runoobDirective3", function() {
+				return {
+					restrict: "M",
+					replace: true,
+					template: "<h1>自定义指令3!</h1>"
+				};
+			});
+			app.directive("runoobDirective4", function() {
+				return {
+					restrict: 'A',
+					template: "<h1>自定义指令4!</h1>"
+				};
+			});
+
+			//过滤器
+			app.filter('myFormat', ['hexafy', function(hexafy) {
+				return function(x) {
+					return hexafy.myFunc(x);
+				};
+			}]);
+		</script>
+	</head>
+
+	<body ng-app="myApp" ng-controller="myCtrl" ng-init="quantity=1;cost=5;person={firstName:'John',lastName:'Doe'};">
+		<div>
+			<h1>{{myWelcome}}</h1>
+			<p>两秒后显示信息:</p>
+			<h1>{{myHeader}}</h1>
+
+			<p>现在时间是:</p>
+			<h1>{{theTime}}</h1>
+
+			<p>255 的16进制是:</p>
+			<h1>{{hex}}</h1> 在过滤器中使用服务:
+			<h1>{{255 | myFormat}}</h1>
+
+			<p>在获取数组 [255, 251, 200] 值时使用过滤器:</p>
+			<ul>
+				<li ng-repeat="x in counts">{{x | myFormat}}</li>
+			</ul>
+			<p>过滤器使用服务将10进制转换为16进制。</p>
+
+			<runoob-directive></runoob-directive>
+
+			<div class="runoob-directive2"></div>
+			<p><strong>注意：</strong> 你必须设置 <b>restrict</b> 的值为 "C" 才能通过类名来调用指令。</p>
+			<!--  directive:runoob-directive3 -->
+			<p><strong>注意：</strong> 我们需要在该实例添加 <strong>replace</strong> 属性， 否则评论是不可见的。</p>
+			<p><strong>注意：</strong> 你必须设置 <b>restrict</b> 的值为 "M" 才能通过注释来调用指令。</p>
+
+			<div runoob-directive4></div>
+			<p><strong>注意：</strong> 通过设置 <strong>restrict</strong> 属性值为 "A" 来设置指令只能通过 HTML 元素的属性来调用。</p>
+
+			<h2>绑定例子</h2> 名: <input type="text" ng-model="firstName" required><br> 姓: <input type="text" ng-model="lastName" required><br>
+			<br> 姓名: {{firstName + " " + lastName | uppercase}}
+			<br> 姓名: {{fullName()}}
+			<p>姓名： <span ng-bind="firstName + ' ' + lastName"></span></p>
+			<p>姓为 <span ng-bind="person.lastName"></span></p>
+
+			<h2>价格计算器</h2> 数量： <input type="number" ng-model="quantity"> 价格： <input type="number" ng-model="price">
+
+			<p><b>总价：</b> {{ quantity * price | currency}}</p>
+
+			<div ng-app="arr" ng-init="names=['Jani','Hege','Kai']">
+				<p>使用 ng-repeat 来循环数组</p>
+				<p>注意 $rootScope 在循环对象内外都可以访问。</p>
+				<ul>
+					<li ng-repeat="x in names">
+						{{ x }} {{lastName}}
+					</li>
+				</ul>
+			</div>
+
+			<p>循环对象：输入过滤</p>
+			<p><input type="text" ng-model="test"></p>
+			<ul>
+				<li ng-repeat="x	in personArr  | filter:test | orderBy:'country'">
+					{{ x.name + ', ' + x.country }}
+				</li>
+			</ul>
+		</div>
+
+		<form name="myForm">
+			Email:
+			<input type="email" name="myAddress" ng-model="myText" required>
+			<span ng-show="myForm.myAddress.$error.email">不是一个合法的邮箱地址</span>
+			<p>在输入框中输入你的邮箱地址，如果不是一个合法的邮箱地址，会弹出提示信息。</p>
+			<h1>状态</h1> {{myForm.myAddress.$valid}} {{myForm.myAddress.$dirty}} {{myForm.myAddress.$touched}}
+		</form>
+
+		<h3>{{myUrl}}</h3>
+		<p>该实例使用了内建的 $location 服务获取当前页面的 URL。</p>
+
+		<p>选择名称:
+			<select ng-model="selectedName" ng-options="x for x in names">
+			</select>
+		</p>
+		<p>选择网站:
+			<select ng-model="selectedSite1">
+				<option ng-repeat="x in sites" value="{{x.url}}">{{x.site}}</option>
+			</select>
+		</p>
+		<h1>你选择的是: {{selectedSite1}}</h1>
+
+		<p>请选择
+			<select ng-model="selectedSite" ng-options="x.site for x in sites">
+			</select>
+		</p>
+		<h1>你选择的是: {{selectedSite.site}}</h1>
+		<p>网址为: {{selectedSite.url}}</p>
+		<p>该实例演示了使用 ng-options 指令来创建下拉列表，选中的值是一个对象。</p>
+
+		<p>这是个对象，请选择
+			<select ng-model="selectedSite2" ng-options="x for (x, y) in sitesObj">
+			</select>
+		</p>
+
+		<h1>你选择的值是: {{selectedSite2}}</h1>
+
+		<p>这是个对象，value也是个对象。<br/>请选择
+			<select ng-model="selectedCar" ng-options="y.color for (x, y) in cars">
+			</select>
+		</p>
+
+		<h1>你选择的值是: {{selectedCar.brand}}</h1>
+
+		<p>以下是table</p>
+		<table>
+			<tr ng-repeat="x in customNames | orderBy : 'Country' ">
+				<td>{{ $index + 1 }}</td>
+				<!--<td>{{ x.Name }}</td>
+		    <td>{{ x.Country | uppercase}}</td>-->
+
+				<td ng-if="$odd" style="background-color: #F1F1F1;">
+					{{x.Name}}
+				</td>
+				<td ng-if="$even">
+					{{x.Name | uppercase}}
+				</td>
+				<td ng-if="$odd" style="background-color: #FFCACA;">
+					{{x.Country}}
+				</td>
+				<td ng-if="$even">
+					{{x.Country | uppercase}}
+				</td>
+			</tr>
+		</table>
+
+		<p>
+			<button ng-disabled="mySwitch">点我!</button>
+		</p>
+		<p>
+			<input type="checkbox" ng-model="mySwitch" />按钮
+		</p>
+		<p>
+			{{ mySwitch }}
+		</p>
+
+		<p ng-show="true">我是可见的。</p>
+
+		<p ng-show="false">我是不可见的。</p>
+
+		<p ng-hide="true">我是不可见的。</p>
+
+		<p ng-hide="false">我是可见的。</p>
+
+		<button ng-click="count = count + 1">点我！</button>
+
+		<p>{{ count }}</p>
+
+		<button ng-click="toggle()">>隐藏/显示</button>
+
+		<p ng-hide="myVar">
+			名: <input type="text" ng-model="firstName"><br> 姓名: <input type="text" ng-model="lastName"><br>
+			<br> Full Name: {{firstName + " " + lastName}}
+		</p>
+
+		<form novalidate>
+			First Name:<br>
+			<input type="text" ng-model="user.firstName"><br> Last Name:<br>
+			<input type="text" ng-model="user.lastName">
+			<br><br>
+			<button ng-click="reset()">RESET</button>
+		</form>
+		<p>form = {{user}}</p>
+		<p>master = {{master}}</p>
+		
+		
+		<h2>Validation Example</h2>
+		<!--$dirty	表单有填写记录
+		$valid	字段内容合法的
+		$invalid	字段内容是非法的
+		$pristine	表单没有填写记录-->
+		<form  name="myForm" novalidate>
+			
+			<p>用户名:<br>
+			  <input type="text" name="userName" ng-model="userName" required>
+			  <span style="color:red" ng-show="myForm.userName.$dirty && myForm.userName.$invalid">
+			  <span ng-show="myForm.userName.$pristine">用户名是必须的。</span>
+<!--			  <span ng-show="myForm.userName.$error.required">用户名是必须的。</span>-->
+			  </span>
+			</p>
+			
+			<p>邮箱:<br>
+			  <input type="email" name="email" ng-model="email" required>
+			  <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+			  <span ng-show="myForm.email.$error.required">邮箱是必须的。</span>
+			  <span ng-show="myForm.email.$error.email">非法的邮箱。</span>
+			  </span>
+			</p>
+			
+			<p>
+			  <input type="submit"
+			  ng-disabled="myForm.userName.$dirty && myForm.userName.$invalid ||
+			  myForm.email.$dirty && myForm.email.$invalid">
+			</p>
+		</form>
+		<p>{{ x1 }}</p>
+		<p>{{ x2 }}</p>
+		<p>{{ x3 }}</p>
+		<p>isString:{{ x4 }}</p>
+		<p>isNumber:{{ x5 }}</p>
+	</body>
+
+</html>

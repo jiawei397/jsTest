@@ -18,9 +18,74 @@
 		</style>
 		<script type="application/javascript">
 			$(function(){
-				jQuery.extend( {
-					jsonTo : function(data) {
-						//return uinv.jsonParse(data);
+//				if($.browser.msie){
+//					alert( $.browser.version );
+//				}
+//				var isIE11 = navigator.userAgent.search(/Trident/i)!=-1;
+//				alert(isIE11)
+				var userAgent = navigator.userAgent,
+					rMsie = /(msies|trident.*rv:)([w.]+)/,
+					rFirefox = /(firefox)/ ([w.] + ) / ,
+					rOpera = /(opera).+version/ ([w.] + ) / ,
+					rChrome = /(chrome)/ ([w.] + ) / ,
+					rSafari = /version/ ([w.] + ).*(safari) / ;
+				var browser;
+				var version;
+				var ua = userAgent.toLowerCase();
+
+				function uaMatch(ua) {
+					var match = rMsie.exec(ua);
+					if(match != null) {
+						return {
+							browser: "IE",
+							version: match[2] || "0"
+						};
+					}
+					var match = rFirefox.exec(ua);
+					if(match != null) {
+						return {
+							browser: match[1] || "",
+							version: match[2] || "0"
+						};
+					}
+					var match = rOpera.exec(ua);
+					if(match != null) {
+						return {
+							browser: match[1] || "",
+							version: match[2] || "0"
+						};
+					}
+					var match = rChrome.exec(ua);
+					if(match != null) {
+						return {
+							browser: match[1] || "",
+							version: match[2] || "0"
+						};
+					}
+					var match = rSafari.exec(ua);
+					if(match != null) {
+						return {
+							browser: match[2] || "",
+							version: match[1] || "0"
+						};
+					}
+					if(match != null) {
+						return {
+							browser: "",
+							version: "0"
+						};
+					}
+				}
+				var browserMatch = uaMatch(userAgent.toLowerCase());
+				if(browserMatch.browser) {
+					browser = browserMatch.browser;
+					version = browserMatch.version;
+				alert(version)
+				}
+				
+
+				jQuery.extend({
+							jsonTo: function(data) {//return uinv.jsonParse(data);
 						return eval("(" + data + ")");
 					},
 					/**
@@ -212,6 +277,7 @@
 		        }
 		        var json= $.toJson(obj);
 				console.log("json="+json);
+				
 			});
 		</script>
 	</head>

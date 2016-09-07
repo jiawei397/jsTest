@@ -17,7 +17,7 @@ function finishLesson(lesson) {
 function requestTest(method) {
 	return 32;
 }
-requestTest("get");
+requestTest("get")
 
 requestTest || alert('requestTest');//如果requestTest为false，不存在，即执行alert
 
@@ -361,8 +361,9 @@ People.prototype.test = function(){
 	  console.log(i);
 	}
 	for(var i = 0;i < 10;i++){
-	    setTimeout(console.log.bind(this,i),1000);
+//	    setTimeout(console.log.bind(this,i),1000);
 //	    setTimeout(consoleLog.bind(this,i),1000);
+//	    setTimeout(console.log(i),1000);
 	}
 	
 	function add(a,b,c) {
@@ -386,7 +387,56 @@ People.prototype.test = function(){
 //	alert(window.location.href);
 	var href = window.location.href;
 	var host = window.location.host;
-	alert(href);
+//	alert(href);
+
+	isEmpty = function(opObject) {
+	    for(var cur in opObject){    	
+	        return false;
+	    };
+	    return true;
+	};
+	
+	var b = isEmpty(null);
+	//alert(b)//true
+	//b = !'';//true
+	//alert(b)
+	
+	var data3 = [];
+	var name = '哈哈';
+	var num1 = '1.333333333';
+	var num2 = '222222222';
+//	data3.push({
+//	  [name]:[num1, num2]
+//	});
+	var obj = {};
+	obj[name] = [num1,num2];
+	data3.push(obj);
+	console.log("data3",data3);
 })();
 
 
+
+
+(function(){
+	var subsys1 = {}, subsys2 = {};
+	var nextIdMod = function(startId) {
+	    var id = startId || 0;
+	    this.next = function() {
+	        return id++;    
+	    };
+	    this.reset = function() {
+	        id = 0;     
+	    }
+	};
+	nextIdMod.call(subsys1);    
+	nextIdMod.call(subsys2,1000);   
+//	nextIdMod.apply(subsys2,[1000]);
+	window.console && console.log(
+	    subsys1.next(),
+	    subsys1.next(),
+	    subsys2.next(),
+	    subsys1.reset(),
+	    subsys2.next(),
+	    subsys1.next()
+	) //0, 1, 1000, undefined, 1001, 0
+})();
